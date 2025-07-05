@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "install:cli": "npm install -g @nexaflow/cli",
+    "install:js": "npm install @nexaflow/client",
+    "install:go": "go get github.com/nexaflow/go-client",
+    "setup:dev": "npm run install:cli && npm run install:js",
+    "test:cli": "nexaflow --version",
+    "test:js": "node -e \"console.log(require('@nexaflow/client'))\"",
+    "demo:upload": "nexaflow upload README.md --title 'Demo Upload'",
+    "demo:space": "nexaflow space create --name 'Demo Space'",
+    "demo:identity": "nexaflow identity create",
+    "publish:all": "npm run publish:cli && npm run publish:js",
+    "publish:cli": "cd packages/cli && npm publish",
+    "publish:js": "cd packages/js-client && npm publish"
+  }
+}

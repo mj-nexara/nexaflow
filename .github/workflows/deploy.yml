@@ -1,0 +1,68 @@
+name: Deploy to Vercel and GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+      env:
+        NEXT_PUBLIC_IPFS_GATEWAY: https://ipfs.io/ipfs/
+        NEXT_PUBLIC_IPFS_API: https://api.ipfs.io
+        NEXT_PUBLIC_NETWORK_ID: nexaflow-mainnet
+        NEXT_PUBLIC_APP_VERSION: 2.0.0
+
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        vercel-args: '--prod'
+        vercel-org-id: ${{ secrets.ORG_ID }}
+        vercel-project-id: ${{ secrets.PROJECT_ID }}
+
+    - name: Export for GitHub Pages
+      run: |
+        npm run build
+        npm run export
+      env:
+        NEXT_PUBLIC_BASE_PATH: /nexaflow
+        NEXT_PUBLIC_ASSET_PREFIX: /nexaflow
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./out
+        cname: nexaflow.pages.dev
+
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ Deployment successful!"
+          echo "🚀 Vercel: https://mjnexaflow.vercel.app"
+          echo "📄 GitHub Pages: https://nexaflow.pages.dev"
+        else
+          echo "❌ Deployment failed!"
+        fi

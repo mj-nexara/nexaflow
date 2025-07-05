@@ -1,0 +1,37 @@
+{
+  "name": "@nexaflow/client",
+  "version": "1.0.0",
+  "description": "NexaFlow JavaScript Client SDK",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["nexaflow", "ipfs", "did", "web3", "javascript", "sdk"],
+  "author": {
+    "name": "MJ AHMAD",
+    "email": "mjahmad.25.10.2003@gmail.com",
+    "url": "https://nexarabd.vercel.app/mjahmad"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^20.0.0",
+    "rollup": "^4.0.0",
+    "typescript": "^5.0.0",
+    "jest": "^29.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mj-nexara/nexaflow.git",
+    "directory": "packages/js-client"
+  },
+  "homepage": "https://mjnexaflow.vercel.app"
+}
